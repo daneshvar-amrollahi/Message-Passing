@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"strconv"
 	"time"
 )
@@ -11,18 +11,19 @@ type Broker struct {
 }
 
 func runClient(broker Broker) {
-	fmt.Println("CLIENT: sending messages 1..5 on channel")
+
 	for i := 1; i <= 5; i++ {
 		message := strconv.Itoa(i)
+		log.Println("CLIENT: sending " + message + " on channel")
 		broker.ch <- message //blocks here until server reads
+		time.Sleep(time.Millisecond * 500)
 	}
 	close(broker.ch)
 }
 
 func runServer(broker Broker) {
 	for message := range broker.ch {
-		fmt.Println("SERVER: received " + message + " from channel")
-		time.Sleep(time.Second)
+		log.Println("SERVER: received " + message + " from channel")
 	}
 }
 
