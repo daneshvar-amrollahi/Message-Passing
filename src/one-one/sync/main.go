@@ -10,18 +10,22 @@ type Broker struct {
 	ch chan string
 }
 
-func runClient(broker Broker) {
+func send(broker *Broker, message string) {
+	log.Println("CLIENT: sending " + message + " on channel")
+	broker.ch <- message //blocks here until server reads
+}
+
+func runClient(broker *Broker) {
 
 	for i := 1; i <= 5; i++ {
 		message := strconv.Itoa(i)
-		log.Println("CLIENT: sending " + message + " on channel")
-		broker.ch <- message //blocks here until server reads
+		send(broker, message)
 		time.Sleep(time.Millisecond * 500)
 	}
 	close(broker.ch)
 }
 
-func runServer(broker Broker) {
+func runServer(broker *Broker) {
 	for message := range broker.ch {
 		log.Println("SERVER: received " + message + " from channel")
 	}
@@ -30,6 +34,6 @@ func runServer(broker Broker) {
 func main() {
 	var broker Broker
 	broker.ch = make(chan string, 0)
-	go runClient(broker)
-	runServer(broker)
+	go runClient(&broker)
+	runServer(&broker)
 }
