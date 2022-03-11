@@ -15,7 +15,7 @@ func runClient(broker Broker) {
 	for i := 1; i <= 60; i++ {
 		message := strconv.Itoa(i)
 		log.Println("CLIENT: sending " + message + " on channel")
-		broker.ch <- message //blocks here until server reads
+		broker.ch <- message //does not block here unless buffer is full (async)
 		time.Sleep(time.Nanosecond)
 	}
 	close(broker.ch)
