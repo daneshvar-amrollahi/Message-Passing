@@ -22,11 +22,9 @@ func runClient(broker *Broker) {
 		message = strconv.Itoa(i)
 		log.Println("CLIENT: sending " + message + " on channel")
 		broker.ch <- message
-		// log.Println("CLIENT: sent " + message + " on channel")
 
 		time.Sleep(time.Second * 2)
 
-		// log.Println("CLIENT: reading from channel")
 		message = <-broker.ch
 		log.Println("CLIENT: read \"" + message + "\" from channel")
 	}
