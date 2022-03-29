@@ -11,31 +11,31 @@ type Broker struct {
 }
 
 func send(broker *Broker, message string) {
-	log.Println("CLIENT: sending " + message + " on channel")
+	log.Println("SERVER: sending " + message + " on channel")
 	broker.ch <- message //blocks here until server reads
 }
 
-func runClient(broker *Broker) {
+func runServer(broker *Broker) {
 	for i := 1; i <= 5; i++ {
 		var message string
 
 		message = strconv.Itoa(i)
-		log.Println("CLIENT: sending " + message + " on channel")
+		log.Println("SERVER: sending " + message + " on channel")
 		broker.ch <- message
 
 		time.Sleep(time.Second * 2)
 
 		message = <-broker.ch
-		log.Println("CLIENT: read \"" + message + "\" from channel")
+		log.Println("SERVER: read \"" + message + "\" from channel")
 	}
 	close(broker.ch)
 }
 
-func runServer(broker *Broker) {
+func runClient(broker *Broker) {
 	for message := range broker.ch {
-		if message[0] >= '0' && message[0] <= '9' { //message is from client
-			log.Println("SERVER: sending SERVER ACK " + message + " on channel")
-			broker.ch <- "SERVER ACK " + message
+		if message[0] >= '0' && message[0] <= '9' { //message is from server
+			log.Println("CLIENT: sending SERVER ACK " + message + " on channel")
+			broker.ch <- "CLIENT ACK " + message
 		}
 	}
 }
@@ -43,6 +43,6 @@ func runServer(broker *Broker) {
 func main() {
 	var broker Broker
 	broker.ch = make(chan string, 0)
-	go runClient(&broker)
-	runServer(&broker)
+	go runServer(&broker)
+	runClient(&broker)
 }

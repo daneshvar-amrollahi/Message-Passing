@@ -14,11 +14,11 @@ type Broker struct {
 }
 
 func send(broker *Broker, message string) {
-	log.Println("CLIENT: sending message on channel  " + strconv.Itoa(broker.sz))
+	log.Println("SERVER: sending message on channel  " + strconv.Itoa(broker.sz))
 	if broker.sz < BUFFER_SIZE {
 		broker.sz += 1
 		broker.ch <- message
-		log.Println("CLIENT: sent message on channel     " + strconv.Itoa(broker.sz))
+		log.Println("SERVER: sent message on channel     " + strconv.Itoa(broker.sz))
 
 	} else {
 		log.Println("BUFFER OVERFLOW! CANNOT SEND NEW MESSAGE FOR NOW")
@@ -51,7 +51,7 @@ func main() {
 			time.Sleep(time.Millisecond * 80)
 			message := recv(&broker)
 			if len(message) > 0 {
-				log.Println("SERVER: received message from channel")
+				log.Println("CLIENT: received message from channel")
 			}
 		}
 	}()
