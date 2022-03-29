@@ -27,7 +27,7 @@ func runServer(broker *Broker) {
 
 func runClient(broker *Broker) {
 	for message := range broker.ch {
-		log.Println("SERVER: received " + message + " from channel")
+		log.Println("CLIENT: received " + message + " from channel")
 	}
 }
 
