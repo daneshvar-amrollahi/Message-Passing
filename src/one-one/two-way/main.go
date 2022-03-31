@@ -18,13 +18,10 @@ func send(broker *Broker, message string) {
 func runServer(broker *Broker) {
 	for i := 1; i <= 5; i++ {
 		var message string
-
 		message = strconv.Itoa(i)
 		log.Println("SERVER: sending " + message + " on channel")
 		broker.ch <- message
-
 		time.Sleep(time.Second * 2)
-
 		message = <-broker.ch
 		log.Println("SERVER: read \"" + message + "\" from channel")
 	}
