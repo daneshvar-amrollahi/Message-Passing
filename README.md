@@ -1,4 +1,4 @@
-# Message-Broker
+# Message-Passing
 
 This is a simple implementation of different message-passing systems in Go for the following cases:
 
