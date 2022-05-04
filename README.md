@@ -1,6 +1,6 @@
 # Message-Broker
 
-This is a simple implementation of a different message-passing systems in Go for the following cases:
+This is a simple implementation of different message-passing systems in Go for the following cases:
 
 1. one client - one server - sync
 
